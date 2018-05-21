@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>PPSR Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+  <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+
+
+  <script src="src/app.js"></script>
+</head>
+
+<body ng-app="myApp">
+  <div class="container" ng-controller="ParticipantCtrl">
+    <h4>Daftar Peserta PPSR 2018</h4>
+    <table class="table" ng-table="table" show-filter="true">
+      <tbody ng-repeat="peserta in $data" class="text-center">
+        <td title="'NPM'" filter="{ 'npm': 'text' }">{{peserta.npm}}</td>
+        <td title="'Nama Lengkap'">{{peserta.name}}</td>
+        <td title="'Email'">{{peserta.email}}</td>
+        <td title="'No Hp'">{{peserta.hp}}</td>
+        <td title="'Kelas'">{{peserta.kelas}}</td>
+        <td title="'Status Bayar'">
+          <span class="label label-success" ng-if="peserta.paid === 'Y' || peserta.paid === 'y'">SUDAH BAYAR</span>
+          <span class="label label-default" ng-if="peserta.paid === 'N' || peserta.paid === 'n'">BELUM BAYAR</span>
+        </td>
+        <td title="'Action'">
+          <button class="btn btn-success btn-xs" ng-if="peserta.paid === 'N' || peserta.paid === 'n'" ng-click="onConfirmPayment(peserta)">Konfirmasi
+            <i class="fa fa-refresh fa-spin" ng-if="loading"></i>
+          </button>
+          <button class="btn btn-danger btn-xs" ng-if="peserta.paid === 'Y' || peserta.paid === 'y'" ng-click="onCancelPayment(peserta)">Batalkan
+            <i class="fa fa-refresh fa-spin" ng-if="loading"></i>
+          </button>
+          <!-- <button class="btn btn-danger btn-xs">Hapus</button> -->
+        </td>
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>
