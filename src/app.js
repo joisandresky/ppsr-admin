@@ -1,7 +1,7 @@
 angular.module('myApp', ['ngTable'])
   .controller('ParticipantCtrl', function ($scope, $http, NgTableParams) {
-    $scope.baseUrl = 'http://localhost/ppsr/api/v1';
-    // $scope.baseUrl = 'https://adelaidedenim.com/ppsr/api/v1';
+    // $scope.baseUrl = 'http://localhost/ppsr/api/v1';
+    $scope.baseUrl = 'https://adelaidedenim.com/ppsr/api/v1';
     $scope.loading = false;
 
     $scope.table = new NgTableParams({
