@@ -1,8 +1,10 @@
 angular.module('myApp', ['ngTable'])
-  .controller('ParticipantCtrl', function ($scope, $http, NgTableParams) {
+  .constant('SERVER_URL', 'https://adelaidedenim.com/ppsr/api/v1')
+  .controller('ParticipantCtrl', function ($scope, $http, NgTableParams, SERVER_URL) {
     // $scope.baseUrl = 'http://localhost/ppsr/api/v1';
     $scope.baseUrl = 'https://adelaidedenim.com/ppsr/api/v1';
     $scope.loading = false;
+    $scope.exporting = false;
 
     $scope.table = new NgTableParams({
       count: 10,
@@ -63,5 +65,31 @@ angular.module('myApp', ['ngTable'])
           $scope.loading = false;
         })
       }
+    };
+
+    $scope.onExportExcel = function () {
+      $scope.exporting = true;
+      $http.get(SERVER_URL + '/participants/export.php')
+        .then(function (response) {
+          console.log('response', response);
+          if (response && response.data) {
+            /* generate a worksheet */
+            var ws = XLSX.utils.json_to_sheet(response.data);
+
+            /* add to workbook */
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "PPSR");
+
+            /* write workbook and force a download */
+            XLSX.writeFile(wb, "ppsr.xlsx");
+            $scope.exporting = false;
+          } else {
+            alert('Ada Kesalahan Saat Melakukan Export Excel!');
+          }
+        })
+        .catch(function (err) {
+          console.log(err);
+          alert('Ada Kesalahan saat menghubungi ke Server!');
+        });
     };
   });
